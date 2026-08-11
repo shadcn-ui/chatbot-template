@@ -1,11 +1,6 @@
-<p align="center">
-  <a href="https://github.com/shadcn-ui/chatbot-template">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/header/transparent.svg?title=Chatbot%20Template&subtitle=A%20minimal%20chatbot%20built%20with%20Next.js%2C%20the%20AI%20SDK%2C%20and%20shadcn%2Fui&logo=vercel&align=center&border=false&mode=dark" />
-      <img src="https://shieldcn.dev/header/transparent.svg?title=Chatbot%20Template&subtitle=A%20minimal%20chatbot%20built%20with%20Next.js%2C%20the%20AI%20SDK%2C%20and%20shadcn%2Fui&logo=vercel&align=center&border=false&mode=light" alt="Chatbot Template" />
-    </picture>
-  </a>
-</p>
+<h1 align="center">
+Chatbot Template
+</h1>
 
 <p align="center">
   <a href="https://github.com/shadcn-ui/chatbot-template/stargazers"><img src="https://shieldcn.dev/github/stars/shadcn-ui/chatbot-template.svg?variant=secondary&size=xs" alt="GitHub stars" /></a>
