@@ -26,13 +26,7 @@ import {
   MessageScrollerViewport,
 } from "@/components/ui/message-scroller"
 
-export function Chat({
-  models,
-  children,
-}: {
-  models: GatewayModel[]
-  children?: React.ReactNode
-}) {
+export function Chat({ models }: { models: GatewayModel[] }) {
   const [model, setModel] = React.useState(models[0]?.id ?? "")
 
   const { messages, sendMessage, status, stop, error, addToolOutput } =
@@ -60,8 +54,7 @@ export function Chat({
       : undefined
 
   return (
-    <div className="mx-auto flex h-svh w-full flex-col">
-      {children}
+    <div className="mx-auto flex min-h-0 w-full flex-1 flex-col">
       {messages.length === 0 ? (
         <div className="flex flex-1 items-center justify-center p-6">
           <Empty>

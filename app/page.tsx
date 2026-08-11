@@ -2,7 +2,6 @@ import type { Metadata } from "next"
 
 import { MODELS } from "@/lib/models"
 import { Chat } from "@/components/chat"
-import { SiteHeader } from "@/components/site-header"
 
 export const metadata: Metadata = {
   title: "Chat",
@@ -11,9 +10,5 @@ export const metadata: Metadata = {
 }
 
 export default function Page() {
-  return (
-    <Chat models={MODELS}>
-      <SiteHeader />
-    </Chat>
-  )
+  return <Chat models={MODELS} />
 }
