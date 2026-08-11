@@ -1,6 +1,6 @@
 "use client"
 
-import { type AskUserToolPart } from "@/lib/tools"
+import { type AskUserToolPart } from "@/tools"
 import {
   Questionnaire,
   QuestionnaireActions,

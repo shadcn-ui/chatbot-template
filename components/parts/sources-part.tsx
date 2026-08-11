@@ -2,7 +2,8 @@
 
 import { ArrowUpRightIcon, GlobeIcon } from "lucide-react"
 
-import { type ChatMessagePart, type SourceUrlPart } from "@/lib/tools"
+import { type ChatMessagePart, type SourceUrlPart } from "@/tools"
+import { safeHttpUrl } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
   Drawer,
@@ -24,6 +25,7 @@ import {
 function getUniqueSources(parts: ChatMessagePart[]): SourceUrlPart[] {
   return parts
     .filter((part): part is SourceUrlPart => part.type === "source-url")
+    .filter((source) => safeHttpUrl(source.url))
     .filter(
       (source, index, all) =>
         all.findIndex((other) => other.url === source.url) === index
