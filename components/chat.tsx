@@ -35,6 +35,7 @@ export function Chat({
   children?: React.ReactNode
 }) {
   const [model, setModel] = React.useState(models[0]?.id ?? "")
+  const [isAnswering, setIsAnswering] = React.useState(false)
 
   const {
     messages,
@@ -66,6 +67,24 @@ export function Chat({
               part.state === "input-available")
         )
       : undefined
+
+  async function handleAnswer(
+    toolCallId: string,
+    answer: { question: string; answer: string }[]
+  ) {
+    if (isAnswering) return
+
+    setIsAnswering(true)
+    try {
+      await addToolOutput({
+        tool: "ask_user",
+        toolCallId,
+        output: answer,
+      })
+    } finally {
+      setIsAnswering(false)
+    }
+  }
 
   return (
     <ChatActionsProvider isBusy={isBusy} onNewChat={() => setMessages([])}>
@@ -112,7 +131,11 @@ export function Chat({
                   ))}
                   {status === "submitted" && (
                     <MessageScrollerItem messageId="thinking">
-                      <div className="flex shimmer items-center gap-2 px-3 text-sm text-muted-foreground">
+                      <div
+                        className="flex shimmer items-center gap-2 px-3 text-sm text-muted-foreground"
+                        role="status"
+                        aria-live="polite"
+                      >
                         Thinking…
                       </div>
                     </MessageScrollerItem>
@@ -121,13 +144,8 @@ export function Chat({
                 {pendingQuestion && (
                   <QuestionCard
                     part={pendingQuestion}
-                    onAnswer={(toolCallId, answer) =>
-                      addToolOutput({
-                        tool: "ask_user",
-                        toolCallId,
-                        output: answer,
-                      })
-                    }
+                    isPending={isAnswering}
+                    onAnswer={handleAnswer}
                   />
                 )}
               </MessageScrollerViewport>

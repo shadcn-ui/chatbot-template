@@ -1,6 +1,7 @@
 "use client"
 
 import { type AskUserToolPart } from "@/lib/tools"
+import { Spinner } from "@/components/ui/spinner"
 import {
   Questionnaire,
   QuestionnaireActions,
@@ -18,13 +19,15 @@ import {
 
 export function QuestionCard({
   part,
+  isPending,
   onAnswer,
 }: {
   part: AskUserToolPart
+  isPending: boolean
   onAnswer: (
     toolCallId: string,
     answers: { question: string; answer: string }[]
-  ) => void
+  ) => Promise<void>
 }) {
   const questions = part.state === "input-available" ? part.input.questions : []
 
@@ -39,6 +42,7 @@ export function QuestionCard({
           <Questionnaire
             key={part.toolCallId}
             defaultItem="q0"
+            aria-busy={isPending}
             items={questions.map((question, index) => ({
               choices: question.choices.map((choice) => ({ value: choice })),
               name: `q${index}`,
@@ -46,6 +50,7 @@ export function QuestionCard({
             }))}
             onSubmit={(event) => {
               event.preventDefault()
+              if (isPending) return
               const formData = new FormData(event.currentTarget)
               onAnswer(
                 part.toolCallId,
@@ -77,9 +82,21 @@ export function QuestionCard({
               </QuestionnaireItem>
             ))}
             <QuestionnaireActions>
-              <QuestionnairePrevious />
-              <QuestionnaireNext>Next</QuestionnaireNext>
-              <QuestionnaireSubmit>Answer</QuestionnaireSubmit>
+              <span className="sr-only" role="status" aria-live="polite">
+                {isPending ? "Sending answer" : ""}
+              </span>
+              <QuestionnairePrevious disabled={isPending} />
+              <QuestionnaireNext disabled={isPending}>Next</QuestionnaireNext>
+              <QuestionnaireSubmit disabled={isPending}>
+                {isPending ? (
+                  <>
+                    <Spinner />
+                    Sending…
+                  </>
+                ) : (
+                  "Answer"
+                )}
+              </QuestionnaireSubmit>
             </QuestionnaireActions>
           </Questionnaire>
         )}

@@ -16,10 +16,12 @@ export function ModelSelect({
   models,
   value,
   onValueChange,
+  disabled = false,
 }: {
   models: GatewayModel[]
   value: string
   onValueChange: (value: string) => void
+  disabled?: boolean
 }) {
   const items = React.useMemo(
     () => models.map((model) => ({ label: model.name, value: model.id })),
@@ -30,6 +32,7 @@ export function ModelSelect({
     <Select
       items={items}
       value={value}
+      disabled={disabled}
       onValueChange={(next) => {
         if (typeof next === "string") onValueChange(next)
       }}

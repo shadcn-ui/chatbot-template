@@ -75,7 +75,12 @@ export function SourcesPart({ parts }: { parts: ChatMessagePart[] }) {
                     size="sm"
                     className="rounded-xl"
                     render={
-                      <a href={source.url} target="_blank" rel="noreferrer" />
+                      <a
+                        href={source.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label={`Open ${title} from ${hostname}`}
+                      />
                     }
                     role="listitem"
                   >
