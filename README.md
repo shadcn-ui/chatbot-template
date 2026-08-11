@@ -51,7 +51,6 @@ The model list lives in [lib/models.ts](lib/models.ts) — the first entry is th
 
 ## How it works
 
-- [app/page.tsx](app/page.tsx) fetches the model catalog server-side with `gateway.getAvailableModels()` and renders the chat, or a setup notice if no credential is configured.
 - [app/api/chat/route.ts](app/api/chat/route.ts) streams responses with `streamText` — plain `"provider/model"` strings route through the AI Gateway automatically.
 - [components/chat.tsx](components/chat.tsx) renders the conversation with `useChat` and shadcn chat primitives.
 - [lib/tools.ts](lib/tools.ts) defines the tools: a server-executed GitHub repo lookup, the interactive `ask_user` questionnaire, and provider-native web search.
