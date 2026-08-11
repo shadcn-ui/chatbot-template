@@ -61,7 +61,7 @@ The route already validates the request body, restricts models to [lib/models.ts
 
 ## How it works
 
-- [app/api/chat/route.ts](app/api/chat/route.ts) streams responses with `streamText` — plain `"provider/model"` strings route through the AI Gateway automatically.
+- [app/api/chat/route.ts](app/api/chat/route.ts) streams responses with `streamText`
 - [components/chat.tsx](components/chat.tsx) renders the conversation with `useChat` and shadcn chat primitives.
 - [tools/](tools) defines the tools — one file per tool (the filename is the model-facing tool name), composed in [tools/index.ts](tools/index.ts): a server-executed GitHub repo lookup, the interactive `ask_user` questionnaire, and provider-native web search.
 
