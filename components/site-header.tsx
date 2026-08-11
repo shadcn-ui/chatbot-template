@@ -1,5 +1,6 @@
 import Link from "next/link"
 
+import { CommandMenuButton } from "@/components/command-menu-button"
 import { NewChatButton } from "@/components/new-chat-button"
 
 export function SiteHeader() {
@@ -8,7 +9,10 @@ export function SiteHeader() {
       <Link href="/" className="text-sm font-medium">
         Chat
       </Link>
-      <NewChatButton />
+      <div className="flex items-center gap-1">
+        <CommandMenuButton />
+        <NewChatButton />
+      </div>
     </header>
   )
 }

@@ -9,7 +9,12 @@ export function NewChatButton() {
   const { isBusy, onNewChat } = useChatActions()
 
   return (
-    <Button variant="secondary" onClick={onNewChat} disabled={isBusy}>
+    <Button
+      id="new-chat"
+      variant="secondary"
+      onClick={onNewChat}
+      disabled={isBusy}
+    >
       <PlusIcon data-icon="inline-start" />
       New chat
     </Button>

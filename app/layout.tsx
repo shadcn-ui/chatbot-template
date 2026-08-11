@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google"
 
 import "./globals.css"
+import { AppCommandMenu } from "@/components/app-command-menu"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils"
 
@@ -28,7 +29,10 @@ export default function RootLayout({
       )}
     >
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <AppCommandMenu />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   )
