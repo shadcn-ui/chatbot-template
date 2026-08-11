@@ -6,7 +6,6 @@ import {
   toUIMessageStream,
   validateUIMessages,
 } from "ai"
-import { z } from "zod"
 
 import { DEFAULT_MODEL, isModelAllowed } from "@/lib/models"
 import { getTools, type ChatUIMessage } from "@/tools"
