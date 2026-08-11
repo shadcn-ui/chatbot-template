@@ -1,4 +1,4 @@
-import { type AskUserToolPart } from "@/lib/tools"
+import { type AskUserToolPart } from "@/tools"
 
 export function AskUserPart({ part }: { part: AskUserToolPart }) {
   if (part.state !== "output-available") {

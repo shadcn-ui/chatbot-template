@@ -56,9 +56,6 @@ importers:
       remark-gfm:
         specifier: ^4.0.1
         version: 4.0.1
-      shadcn:
-        specifier: ^4.16.2
-        version: 4.16.2(typescript@5.9.3)
       tailwind-merge:
         specifier: ^3.6.0
         version: 3.6.0
@@ -93,6 +90,9 @@ importers:
       prettier-plugin-tailwindcss:
         specifier: ^0.8.0
         version: 0.8.1(prettier@3.9.6)
+      shadcn:
+        specifier: ^4.16.2
+        version: 4.16.2(typescript@5.9.3)
       tailwindcss:
         specifier: ^4
         version: 4.3.3

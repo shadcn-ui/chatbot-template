@@ -1,6 +1,6 @@
 "use client"
 
-import { type ChatUIMessage } from "@/lib/tools"
+import { type ChatUIMessage } from "@/tools"
 import { AskUserPart } from "@/components/parts/ask-user-part"
 import { GithubRepoPart } from "@/components/parts/github-repo-part"
 import { SourcesPart } from "@/components/parts/sources-part"

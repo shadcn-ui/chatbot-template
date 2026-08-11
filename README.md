@@ -49,11 +49,21 @@ pnpm dev
 
 The model list lives in [lib/models.ts](lib/models.ts) — the first entry is the default model.
 
+## Security
+
+The `/api/chat` route is **public and unauthenticated** — every request spends your AI Gateway credits. That's fine for a personal demo, but before putting it in front of real traffic you should:
+
+- **Rate limit it.** Add [Vercel Firewall / WAF](https://vercel.com/docs/security/vercel-waf) rules or [`@upstash/ratelimit`](https://github.com/upstash/ratelimit-js) so a single client can't drain your credits (denial-of-wallet).
+- **Cap spend.** Set an [AI Gateway spend limit](https://vercel.com/docs/ai-gateway/observability-and-spend/budgets) as a backstop.
+- **Add auth** if the chatbot isn't meant to be public.
+
+The route already validates the request body, restricts models to [lib/models.ts](lib/models.ts), caps output tokens and step count, and aborts generation on client disconnect — but those bound a single request, not overall volume.
+
 ## How it works
 
 - [app/api/chat/route.ts](app/api/chat/route.ts) streams responses with `streamText` — plain `"provider/model"` strings route through the AI Gateway automatically.
 - [components/chat.tsx](components/chat.tsx) renders the conversation with `useChat` and shadcn chat primitives.
-- [lib/tools.ts](lib/tools.ts) defines the tools: a server-executed GitHub repo lookup, the interactive `ask_user` questionnaire, and provider-native web search.
+- [tools/](tools) defines the tools — one file per tool (the filename is the model-facing tool name), composed in [tools/index.ts](tools/index.ts): a server-executed GitHub repo lookup, the interactive `ask_user` questionnaire, and provider-native web search.
 
 ## Tool parts
 
@@ -71,7 +81,7 @@ Tool parts move through states as the stream progresses — `input-streaming` �
 
 ### Adding your own tool
 
-1. Define the tool in [lib/tools.ts](lib/tools.ts) with a `description`, an `inputSchema`, and an `execute` function (omit `execute` for tools the user answers in the UI, like `ask_user`).
+1. Create `tools/<name>.ts` (the filename is the model-facing tool name) exporting a `tool()` with a `description`, an `inputSchema`, and an `execute` function (omit `execute` for tools the user answers in the UI, like `ask_user`), then register it in [tools/index.ts](tools/index.ts).
 2. Add a part component in [components/parts/](components/parts) and a `case "tool-<name>"` in [chat-message.tsx](components/chat-message.tsx).
 
 Message types are inferred from the tool definitions via `InferUITools`, so `part.input` and `part.output` are fully typed in your part component — renaming a tool field is a build error, not a silent `undefined`.

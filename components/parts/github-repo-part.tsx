@@ -1,6 +1,7 @@
 import { GitForkIcon, StarIcon } from "lucide-react"
 
-import { type GithubRepoToolPart } from "@/lib/tools"
+import { type GithubRepoToolPart } from "@/tools"
+import { safeHttpUrl } from "@/lib/utils"
 import { Spinner } from "@/components/ui/spinner"
 
 const formatCount = new Intl.NumberFormat("en", {
@@ -26,7 +27,7 @@ export function GithubRepoPart({ part }: { part: GithubRepoToolPart }) {
       }
       return (
         <a
-          href={part.output.url}
+          href={safeHttpUrl(part.output.url) ?? "#"}
           target="_blank"
           rel="noreferrer"
           className="flex w-fit items-center gap-3 px-1.5 text-sm text-muted-foreground hover:text-foreground"

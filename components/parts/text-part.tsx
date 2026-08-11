@@ -1,7 +1,7 @@
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 
-import { type TextMessagePart } from "@/lib/tools"
+import { type TextMessagePart } from "@/tools"
 
 export function TextPart({ part }: { part: TextMessagePart }) {
   if (!part.text.trim()) {
