@@ -10,7 +10,9 @@ const baseTools = {
     inputSchema: z.object({
       repo: z
         .string()
-        .describe('The repository in "owner/name" format, e.g. "vercel/next.js"'),
+        .describe(
+          'The repository in "owner/name" format, e.g. "vercel/next.js"'
+        ),
     }),
     execute: async ({ repo }) => {
       const res = await fetch(`https://api.github.com/repos/${repo}`, {

@@ -1,17 +1,13 @@
-"use client"
-
 import { PlusIcon } from "lucide-react"
 
-import { useChatActions } from "@/components/chat-actions"
 import { Button } from "@/components/ui/button"
 
 export function NewChatButton() {
-  const { isBusy, onNewChat } = useChatActions()
-
   return (
-    <Button variant="secondary" onClick={onNewChat} disabled={isBusy}>
+    // eslint-disable-next-line @next/next/no-html-link-for-pages
+    <Button variant="secondary" render={<a href="/" />} nativeButton={false}>
       <PlusIcon data-icon="inline-start" />
-      New chat
+      New Chat
     </Button>
   )
 }

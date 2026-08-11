@@ -5,7 +5,6 @@ import { useChat } from "@ai-sdk/react"
 import { lastAssistantMessageIsCompleteWithToolCalls } from "ai"
 import { type GatewayModel } from "@/lib/models"
 import { type ChatUIMessage } from "@/lib/tools"
-import { ChatActionsProvider } from "@/components/chat-actions"
 import { ChatMessage } from "@/components/chat-message"
 import { PromptForm } from "@/components/prompt-form"
 import { QuestionCard } from "@/components/question-card"
@@ -36,19 +35,12 @@ export function Chat({
 }) {
   const [model, setModel] = React.useState(models[0]?.id ?? "")
 
-  const {
-    messages,
-    sendMessage,
-    status,
-    stop,
-    error,
-    setMessages,
-    addToolOutput,
-  } = useChat<ChatUIMessage>({
-    // Resume the conversation automatically once the user has answered the
-    // ask_user questionnaire.
-    sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithToolCalls,
-  })
+  const { messages, sendMessage, status, stop, error, addToolOutput } =
+    useChat<ChatUIMessage>({
+      // Resume the conversation automatically once the user has answered the
+      // ask_user questionnaire.
+      sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithToolCalls,
+    })
 
   const resolvedModel = models.some((m) => m.id === model)
     ? model
@@ -68,93 +60,91 @@ export function Chat({
       : undefined
 
   return (
-    <ChatActionsProvider isBusy={isBusy} onNewChat={() => setMessages([])}>
-      <div className="mx-auto flex h-svh w-full flex-col">
-        {children}
-        {messages.length === 0 ? (
-          <div className="flex flex-1 items-center justify-center p-6">
-            <Empty>
-              <EmptyHeader>
-                <EmptyTitle>What can I help with?</EmptyTitle>
-                <EmptyDescription>
-                  Pick a model and start chatting. Responses stream through the
-                  Vercel AI Gateway.
-                </EmptyDescription>
-              </EmptyHeader>
-              <EmptyContent>
-                <Suggestions
-                  onSelect={(prompt) =>
-                    sendMessage(
-                      { text: prompt },
-                      { body: { model: resolvedModel } }
-                    )
+    <div className="mx-auto flex h-svh w-full flex-col">
+      {children}
+      {messages.length === 0 ? (
+        <div className="flex flex-1 items-center justify-center p-6">
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>What can I help with?</EmptyTitle>
+              <EmptyDescription>
+                Pick a model and start chatting. Responses stream through the
+                Vercel AI Gateway.
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <Suggestions
+                onSelect={(prompt) =>
+                  sendMessage(
+                    { text: prompt },
+                    { body: { model: resolvedModel } }
+                  )
+                }
+              />
+            </EmptyContent>
+          </Empty>
+        </div>
+      ) : (
+        <MessageScrollerProvider>
+          <MessageScroller className="flex-1">
+            <MessageScrollerViewport>
+              <MessageScrollerContent className="mx-auto flex w-full max-w-2xl flex-col gap-6 px-6 py-6">
+                {messages.map((message) => (
+                  <MessageScrollerItem
+                    key={message.id}
+                    messageId={message.id}
+                    scrollAnchor={message.role === "user"}
+                  >
+                    <ChatMessage
+                      message={message}
+                      isStreaming={isBusy && message.id === lastMessage?.id}
+                    />
+                  </MessageScrollerItem>
+                ))}
+                {status === "submitted" && (
+                  <MessageScrollerItem messageId="thinking">
+                    <div className="flex shimmer items-center gap-2 px-3 text-sm text-muted-foreground">
+                      Thinking…
+                    </div>
+                  </MessageScrollerItem>
+                )}
+              </MessageScrollerContent>
+              {pendingQuestion && (
+                <QuestionCard
+                  part={pendingQuestion}
+                  onAnswer={(toolCallId, answer) =>
+                    addToolOutput({
+                      tool: "ask_user",
+                      toolCallId,
+                      output: answer,
+                    })
                   }
                 />
-              </EmptyContent>
-            </Empty>
-          </div>
-        ) : (
-          <MessageScrollerProvider>
-            <MessageScroller className="flex-1">
-              <MessageScrollerViewport>
-                <MessageScrollerContent className="mx-auto flex w-full max-w-2xl flex-col gap-6 px-6 py-6">
-                  {messages.map((message) => (
-                    <MessageScrollerItem
-                      key={message.id}
-                      messageId={message.id}
-                      scrollAnchor={message.role === "user"}
-                    >
-                      <ChatMessage
-                        message={message}
-                        isStreaming={isBusy && message.id === lastMessage?.id}
-                      />
-                    </MessageScrollerItem>
-                  ))}
-                  {status === "submitted" && (
-                    <MessageScrollerItem messageId="thinking">
-                      <div className="flex shimmer items-center gap-2 px-3 text-sm text-muted-foreground">
-                        Thinking…
-                      </div>
-                    </MessageScrollerItem>
-                  )}
-                </MessageScrollerContent>
-                {pendingQuestion && (
-                  <QuestionCard
-                    part={pendingQuestion}
-                    onAnswer={(toolCallId, answer) =>
-                      addToolOutput({
-                        tool: "ask_user",
-                        toolCallId,
-                        output: answer,
-                      })
-                    }
-                  />
-                )}
-              </MessageScrollerViewport>
-              <MessageScrollerButton />
-            </MessageScroller>
-          </MessageScrollerProvider>
-        )}
+              )}
+            </MessageScrollerViewport>
+            <MessageScrollerButton />
+          </MessageScroller>
+        </MessageScrollerProvider>
+      )}
 
-        <div className="mx-auto flex w-full max-w-2xl flex-col gap-2 px-6 pb-6">
-          {error && (
-            <Alert variant="destructive">
-              <AlertTitle>Request failed</AlertTitle>
-              <AlertDescription>{error.message}</AlertDescription>
-            </Alert>
-          )}
-          <PromptForm
-            models={models}
-            model={resolvedModel}
-            onModelChange={setModel}
-            isBusy={isBusy}
-            onSubmit={(text) =>
-              sendMessage({ text }, { body: { model: resolvedModel } })
-            }
-            onStop={() => stop()}
-          />
-        </div>
+      <div className="mx-auto flex w-full max-w-2xl flex-col gap-2 px-6 pb-6">
+        {error && (
+          <Alert variant="destructive">
+            <AlertTitle>Request failed</AlertTitle>
+            <AlertDescription>{error.message}</AlertDescription>
+          </Alert>
+        )}
+        <PromptForm
+          models={models}
+          model={resolvedModel}
+          onModelChange={setModel}
+          isBusy={isBusy}
+          onSubmit={(text) =>
+            sendMessage({ text }, { body: { model: resolvedModel } })
+          }
+          onStop={() => stop()}
+        />
       </div>
-    </ChatActionsProvider>
+    </div>
   )
 }
