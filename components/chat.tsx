@@ -110,6 +110,7 @@ export function Chat({ models }: { models: GatewayModel[] }) {
                       tool: "ask_user",
                       toolCallId,
                       output: answer,
+                      options: { body: { model: resolvedModel } },
                     })
                   }
                 />
