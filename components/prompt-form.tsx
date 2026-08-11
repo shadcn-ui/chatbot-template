@@ -28,6 +28,7 @@ export function PromptForm({
   onStop: () => void
 }) {
   const [input, setInput] = React.useState("")
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null)
 
   function handleSubmit(event?: React.FormEvent) {
     event?.preventDefault()
@@ -37,12 +38,34 @@ export function PromptForm({
     setInput("")
   }
 
+  React.useEffect(() => {
+    function handleShortcut(event: KeyboardEvent) {
+      if (event.key !== "/" || event.metaKey || event.ctrlKey || event.altKey)
+        return
+
+      const target = event.target
+      const isEditingElsewhere =
+        target instanceof HTMLElement &&
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.isContentEditable)
+      if (isEditingElsewhere) return
+
+      event.preventDefault()
+      textareaRef.current?.focus()
+    }
+
+    document.addEventListener("keydown", handleShortcut)
+    return () => document.removeEventListener("keydown", handleShortcut)
+  }, [])
+
   return (
     <form onSubmit={handleSubmit}>
       <InputGroup>
         <InputGroupTextarea
+          ref={textareaRef}
           aria-label="Message"
-          placeholder="Send a message…"
+          placeholder="Send a message… (press / to focus)"
           className="p-3.5"
           value={input}
           onChange={(event) => setInput(event.target.value)}
