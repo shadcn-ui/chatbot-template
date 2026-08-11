@@ -6,13 +6,36 @@ import {
   streamText,
   toUIMessageStream,
 } from "ai"
+import { z } from "zod"
 
 import { DEFAULT_MODEL, isModelAllowed } from "@/lib/models"
 import { getTools, type ChatUIMessage } from "@/lib/tools"
 
+const chatRequestSchema = z.object({
+  messages: z.array(
+    z
+      .object({
+        id: z.string(),
+        role: z.enum(["system", "user", "assistant"]),
+        parts: z.array(z.unknown()),
+      })
+      .passthrough()
+  ),
+  model: z.string().min(1).optional(),
+})
+
 export async function POST(req: Request) {
-  const { messages, model }: { messages: ChatUIMessage[]; model?: string } =
-    await req.json()
+  const body = await req.json().catch(() => undefined)
+  const request = chatRequestSchema.safeParse(body)
+
+  if (!request.success) {
+    return Response.json({ error: "Invalid chat request." }, { status: 400 })
+  }
+
+  const { messages, model } = request.data as {
+    messages: ChatUIMessage[]
+    model?: string
+  }
 
   const modelId = model ?? DEFAULT_MODEL
 

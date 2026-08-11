@@ -41,6 +41,7 @@ export function PromptForm({
     <form onSubmit={handleSubmit}>
       <InputGroup>
         <InputGroupTextarea
+          aria-label="Message"
           placeholder="Send a message…"
           className="p-3.5"
           value={input}
