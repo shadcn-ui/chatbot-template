@@ -1,4 +1,18 @@
-# Chatbot Template
+<p align="center">
+  <a href="https://github.com/shadcn-ui/chatbot-template">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/header/transparent.svg?title=Chatbot%20Template&subtitle=A%20minimal%20chatbot%20built%20with%20Next.js%2C%20the%20AI%20SDK%2C%20and%20shadcn%2Fui&logo=vercel&align=center&border=false&mode=dark" />
+      <img src="https://shieldcn.dev/header/transparent.svg?title=Chatbot%20Template&subtitle=A%20minimal%20chatbot%20built%20with%20Next.js%2C%20the%20AI%20SDK%2C%20and%20shadcn%2Fui&logo=vercel&align=center&border=false&mode=light" alt="Chatbot Template" />
+    </picture>
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/shadcn-ui/chatbot-template/stargazers"><img src="https://shieldcn.dev/github/stars/shadcn-ui/chatbot-template.svg?variant=secondary&size=xs" alt="GitHub stars" /></a>
+  <a href="https://github.com/shadcn-ui/chatbot-template/forks"><img src="https://shieldcn.dev/github/forks/shadcn-ui/chatbot-template.svg?variant=secondary&size=xs" alt="GitHub forks" /></a>
+  <a href="https://github.com/shadcn-ui/chatbot-template/blob/main/LICENSE"><img src="https://shieldcn.dev/github/license/shadcn-ui/chatbot-template.svg?variant=secondary&size=xs" alt="License" /></a>
+  <a href="https://github.com/shadcn-ui/chatbot-template/commits/main"><img src="https://shieldcn.dev/github/last-commit/shadcn-ui/chatbot-template.svg?variant=secondary&size=xs" alt="Last commit" /></a>
+</p>
 
 A minimal chatbot template built with Next.js, the [AI SDK](https://ai-sdk.dev), [shadcn/ui](https://ui.shadcn.com), [shadcn/react](https://ui.shadcn.com/docs/react/message-scroller), [shadcn/typeset](https://ui.shadcn.com/docs/typeset) and the [Vercel AI Gateway](https://vercel.com/docs/ai-gateway).
 
