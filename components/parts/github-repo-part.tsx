@@ -29,6 +29,7 @@ export function GithubRepoPart({ part }: { part: GithubRepoToolPart }) {
           href={part.output.url}
           target="_blank"
           rel="noreferrer"
+          aria-label="Open repository details on GitHub"
           className="flex w-fit items-center gap-3 px-1.5 text-sm text-muted-foreground hover:text-foreground"
         >
           <span className="font-medium text-foreground">

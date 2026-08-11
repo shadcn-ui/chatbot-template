@@ -38,12 +38,17 @@ export function PromptForm({
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} aria-busy={isBusy}>
       <InputGroup>
         <InputGroupTextarea
+          id="chat-prompt"
+          name="message"
+          required
+          minLength={1}
           placeholder="Send a message…"
           className="p-3.5"
           value={input}
+          disabled={isBusy}
           onChange={(event) => setInput(event.target.value)}
           onKeyDown={(event) => {
             if (
@@ -61,6 +66,7 @@ export function PromptForm({
             models={models}
             value={model}
             onValueChange={onModelChange}
+            disabled={isBusy}
           />
           {isBusy ? (
             <InputGroupButton
